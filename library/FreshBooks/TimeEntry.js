@@ -1,3 +1,4 @@
+var FreshBooks_Element = require('./Element');
 FreshBooks_TimeEntry.prototype = new FreshBooks_Element();
 FreshBooks_TimeEntry.prototype.constructor = FreshBooks_TimeEntry;
 FreshBooks_TimeEntry.superclass = FreshBooks_Element.prototype;
@@ -20,6 +21,9 @@ function FreshBooks_TimeEntry()
 	this.hours = "";
 	this.staffId = "";
 }
+	
+module.exports = FreshBooks_TimeEntry;
+	
 	
 /**
 * return XML string
@@ -66,7 +70,7 @@ FreshBooks_TimeEntry.prototype.internalPrepareCreate = function(content)
 FreshBooks_TimeEntry.prototype.internalCreate = function(responseStatus,XMLObject)
 {
 	if(responseStatus){
-		this.timeEntryId = this.getXMLElementValue(XMLObject.getElementsByTagName('response')[0],"time_entry_id");
+        this.timeEntryId = this.getXMLElementValue(XMLObject.getElementsByTagName('response')[0],"time_entry_id");
 	}
 }
 

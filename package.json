@@ -1,0 +1,14 @@
+{
+  "author": "Martin Cleaver <Martin@Cleaver.org> (http://martin.cleaver.org)",
+  "name": "freshbooks-javascript-library",
+  "description": "Aspires to node! Based heavily on browser js by Milan Rukavina See https://github.com/mrjcleaver/freshbooks-javascript-library",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": "~0.4.11"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
