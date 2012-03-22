@@ -146,12 +146,17 @@ FreshBooks_TimeEntry.prototype.internalPrepareListing = function(filters,content
 /**
 * process XML string response from LIST server method
 */		
-FreshBooks_TimeEntry.prototype.internalListing = function(responseStatus,XMLObject,rows,resultInfo)
+FreshBooks_TimeEntry.prototype.internalListing = function(responseStatus, xmlObject, rows, resultInfo)
 {
+    if (!xmlObject) {    // TODO - figure out a real escalation policy
+        console.log("ASSERT: xmlObject was invalid", xmlObject)
+        return undefined;
+    }
+
 	var result = Object();
 	var resultTimeEntries = Array();
 	if(responseStatus){
-		var timeEntries = XMLObject.getElementsByTagName('time_entry');
+		var timeEntries = xmlObject.getElementsByTagName('time_entry');
 		if(timeEntries.length > 0){
 			resultTimeEntries.length = timeEntries.length;		
 			for(var i = 0; i < timeEntries.length; i++){
@@ -161,7 +166,7 @@ FreshBooks_TimeEntry.prototype.internalListing = function(responseStatus,XMLObje
 			}
 		}
 	}
-	var timeEntriesInfo = XMLObject.getElementsByTagName('time_entries')[0];
+	var timeEntriesInfo = xmlObject.getElementsByTagName('time_entries')[0];
 	result.page = timeEntriesInfo.getAttribute('page');
 	result.perPage = timeEntriesInfo.getAttribute('per_page');
 	result.pages = timeEntriesInfo.getAttribute('pages');

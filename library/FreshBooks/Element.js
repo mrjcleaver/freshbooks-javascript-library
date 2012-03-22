@@ -50,7 +50,7 @@ FreshBooks_Element.prototype.getXMLElementValue = function (xmlObject, element) 
         logger.info("getXMLElementValue for ", element, " has invalid xmlObject");
 		return "";
     }
-    logger.info("getXMLElementValue for ", element);
+    //logger.info("getXMLElementValue for ", element);
     //logger.debug(" in ", xmlObject);
 
     // TODO - untested under browser js
@@ -239,12 +239,23 @@ FreshBooks_Element.prototype.internalDelete = function(responseStatus,XMLObject)
 * list/search remote elements
 * returns object containing: "page", "perPage", "pages", "total" and "rows" array of records
 */   	 	
-FreshBooks_Element.prototype.listing = function(page,perPage,filters){
-	var content = this.getTagXML("page",page) + this.getTagXML("per_page",perPage);
-	content = content + this.internalPrepareListing(filters,content);
-	var responseXML = this.sendRequest(content,"list");
-	var responseStatus = this.processResponse(responseXML);
-	return this.internalListing(responseStatus,responseXML);
+FreshBooks_Element.prototype.listing = function(page,perPage,filters,callbackParameter){
+    var self = this;     // closure to remember who I am inside the callback
+
+    var content = this.getTagXML("page",page) + this.getTagXML("per_page",perPage);
+    content = content + this.internalPrepareListing(filters,content);
+
+
+    var callback = function(responseXML){
+        var responseStatus = self.processResponse(responseXML);
+        var listing = self.internalListing(responseStatus,responseXML);
+        self.internalCreate(responseStatus, responseXML);
+        if (callbackParameter) {   // Is there a better way, e.g. convention, than passing self like this?
+            callbackParameter(responseStatus, listing, self);
+        }
+    }
+
+	var responseXML = this.sendRequest(content,"list", callback);
 }
 /**
 * internal hook to be implemented in child classes with particular logic how to process xml response object for list

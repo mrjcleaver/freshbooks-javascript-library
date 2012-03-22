@@ -69,12 +69,13 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
      *
      * @return {Boolean}
      */
+    // TODO: if you omit parameterCallback the error reporting doesn't work
     this.nodeSend = function (content, parameterCallback) {
         if (!content) {
             console.trace();
             throw ("No content!");
         } else {
-            logger.info("content " + content);
+//            logger.info("content " + content);
         }
 
         var responseCallback = processNodeResponse;
@@ -83,17 +84,17 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
             responseCallback = parameterCallback;
         };
 
-        logger.info("Response will go to ", responseCallback);
+//        logger.info("Response will go to ", responseCallback);
 
         var responseCallback = function (error, response, bodyXML) {
-            logger.info("Callback on Response: ", error, bodyXML); // don't print response object
+//            logger.info("Callback on Response: ", error, bodyXML); // don't print response object
             var xmlObject;
 
             if (responseCallback) {
                 if (typeof bodyXML === "string") {                // in Node, this is a string.
                                                                   // the js library gets this as an XMLObject
                     xmlObject = jsdom.jsdom(bodyXML);
-                    logger.info("Converted ", bodyXML, " to XML");
+//                    logger.info("Converted ", bodyXML, " to XML");
 //                    logger.trace("xml ouput = ", xmlObject);
                 } else {
                     xmlObject = bodyXML;
@@ -119,9 +120,9 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
             onError:errorCallback
         };
 
-        logger.info("Node Send:", options);
+//        logger.info("Node Send:", options);
         req = nodeRequest(options, responseCallback);// ('callback', error, response, body)
-        logger.info("moving on");
+//        logger.info("moving on");
 
     };
 
