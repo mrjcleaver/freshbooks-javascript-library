@@ -130,9 +130,9 @@ FreshBooks_Element.prototype.processResponse = function(xmlObject){
 		this.lastError = "Response was empty"; // Used to say "Connection Error", but that was an assumption
 		return false;
 	}
-    var response = this.getXMLElementValue(xmlObject,"response");
+    //var response = this.getXMLElementValue(xmlObject,"response"); // SMELL - one of these two lines is needed. Which... that is the q.
+	var response = xmlObject.getElementsByTagName("response");
 
-	//var response = xmlObject.getElementsByTagName("response");
 	if(response != null && response.length)  {
 		var result = xmlObject.getElementsByTagName("response")[0].getAttribute("status") == "ok";
     } else {
@@ -218,13 +218,23 @@ FreshBooks_Element.prototype.internalGet = function(responseStatus,XMLObject){}
 /**
 * delete remote element
 */   	 	
-FreshBooks_Element.prototype.del = function(){
-	var content = "";
-	content = this.internalPrepareDelete(content);
-	var responseXML = this.sendRequest(content,"delete");
-	var responseStatus = this.processResponse(responseXML);
-	this.internalDelete(responseStatus,responseXML);
-	return responseStatus;
+FreshBooks_Element.prototype.del = function(callbackParameter){ // SMELL - why is this not called delete?
+
+    var self = this;     // closure to remember who I am inside the callback
+    var content = "";
+    content = this.internalPrepareDelete(content);
+
+    var callback = function(responseXML){
+        var responseStatus = self.processResponse(responseXML);
+        self.internalDelete(responseStatus, responseXML);
+
+        if (callbackParameter) {   // Is there a better way, e.g. convention, than passing self like this?
+            callbackParameter(responseStatus, self);
+        }
+    }
+
+    this.sendRequest(content,"delete", callback);
+
 }
 /**
 * internal hook to be implemented in child classes with particular logic how to generate xml request for delete request

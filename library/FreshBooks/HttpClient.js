@@ -5,7 +5,7 @@ var nodeRequest = require("request");
 var jsdom = require('jsdom');
 var log4js = require('log4js');
 var logger = log4js.getLogger();
-logger.setLevel(logger.INFO);
+logger.setLevel(logger.WARN);
 
 
 FreshBooks_HttpClient.prototype.constructor = FreshBooks_HttpClient;
@@ -75,7 +75,7 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
             console.trace();
             throw ("No content!");
         } else {
-//            logger.info("content " + content);
+            logger.info("Sending " + content);
         }
 
         var responseCallback = processNodeResponse;
@@ -87,7 +87,7 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
 //        logger.info("Response will go to ", responseCallback);
 
         var responseCallback = function (error, response, bodyXML) {
-//            logger.info("Callback on Response: ", error, bodyXML); // don't print response object
+            logger.info("Callback on Response: ", error, bodyXML); // don't print response object
             var xmlObject;
 
             if (responseCallback) {
