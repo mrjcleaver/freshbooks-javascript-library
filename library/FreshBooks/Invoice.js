@@ -152,6 +152,6 @@ FreshBooks_Invoice.prototype.internalSendByEmail = function(responseStatus,XMLOb
 FreshBooks_Invoice.prototype.sendBySnailMail = function(){
 	var content = this.getTagXML("invoice_id",this.invoiceId);
 	var responseXML = this.sendRequest(content,"sendBySnailMail");
-	var responseStatus = this.processResponse(responseXML);
+	var responseStatus = this.processCreateResponse(responseXML);
 	return responseStatus;
 }

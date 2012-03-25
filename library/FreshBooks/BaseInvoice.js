@@ -262,7 +262,7 @@ FreshBooks_BaseInvoice.prototype.sendByEmail = function(){
 	var content = "";
 	content = this.internalPrepareSendByEmail(content);
 	var responseXML = this.sendRequest(content,"sendByEmail");
-	var responseStatus = this.processResponse(responseXML);
+	var responseStatus = this.processCreateResponse(responseXML);
 	this.internalSendByEmail(responseStatus,responseXML);
 	return responseStatus;
 }

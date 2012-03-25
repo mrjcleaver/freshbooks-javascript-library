@@ -1,6 +1,5 @@
 var log4js = require('log4js');
-var logger = log4js.getLogger();
-logger.setLevel(logger.INFO);
+var logger = log4js.getLogger('Element', 'INFO');
 
 
 /**
@@ -61,7 +60,9 @@ FreshBooks_Element.prototype.getXMLElementValue = function (xmlObject, element) 
     }
 //    logger.debug("jsDomAns = ", jsdomAns);
     if (jsdomAns) {
-        return jsdomAns.firstChild.nodeValue;
+        if (jsdomAns.firstChild) {
+            return jsdomAns.firstChild.nodeValue;
+        }
     }
 
     logger.info("getXMLElementValue for ", element, " fell through to old implementation");
@@ -179,6 +180,7 @@ FreshBooks_Element.prototype.internalCreate = function(responseStatus,XMLObject)
 * update remote element
 */   	 	
 FreshBooks_Element.prototype.update = function (){
+    logger.error("update has not been modified for async JS (TODO)");
 	var content = "";
 	content = this.internalPrepareUpdate(content);
 	var responseXML = this.sendRequest(content,"update");
@@ -199,7 +201,9 @@ FreshBooks_Element.prototype.internalUpdate = function(responseStatus,XMLObject)
 * get remote element
 */   	 	
 FreshBooks_Element.prototype.get = function(id){
-	var content = "";
+    logger.error("get has not been modified for async JS (TODO)");
+
+    var content = "";
 	content = this.internalPrepareGet(id,content);
 	var responseXML = this.sendRequest(content,"get");
 	var responseStatus = this.processResponse(responseXML);

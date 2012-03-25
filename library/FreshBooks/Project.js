@@ -1,3 +1,5 @@
+var FreshBooks_Element = require('./Element');
+
 FreshBooks_Project.prototype = new FreshBooks_Element();
 FreshBooks_Project.prototype.constructor = FreshBooks_Project;
 FreshBooks_Project.superclass = FreshBooks_Element.prototype;
@@ -21,7 +23,9 @@ function FreshBooks_Project()
 	this.staff = new Array();
 	this.tasks = new Array();
 }
-	
+
+module.exports = FreshBooks_Project;
+
 /**
 * return XML string
 */	

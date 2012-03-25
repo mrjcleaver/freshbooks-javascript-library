@@ -14,31 +14,10 @@ GLOBAL.httpClient = undefined;
 
 describe('timeEntry', function () {
 
-
     it('should be able to initialize httpClient', function () {
 
         GLOBAL.httpClient = new FreshBooks.HttpClient(url, token);
         expect(httpClient).toNotBe(null);
-    });
-
-
-    it('should be able to send raw XML via httpClient', function () {
-        var ans = undefined;
-
-        var callback = function (params) {
-            //console.log("Called back with ", params);
-            ans = params;
-            var statusCode = ans.getElementsByTagName("response")[0].getAttribute("status");
-            expect(statusCode).toMatch('.*ok.*');
-            asyncSpecDone();
-        }
-
-        expect(httpClient).toNotBe(null);
-        httpClient.send(
-            '<request method="time_entry.create"><time_entry><project_id>1</project_id><task_id>1</task_id><notes>notes</notes><hours>1</hours></time_entry></request>',
-            callback);
-
-        asyncSpecWait();
     });
 
     it('timeEntry should generate XML', function(){
@@ -51,7 +30,7 @@ describe('timeEntry', function () {
         expect (xml).toEqual('<time_entry><notes>notes</notes><hours>1</hours></time_entry>');
     });
 
-    it('timeEntry should submit', function(){
+    it('timeEntry should successfully submit a timeentry', function(){
 
         var entry = new FreshBooks.TimeEntry();
         entry.notes = "notes";
@@ -83,7 +62,7 @@ describe('timeEntry', function () {
 
         var resultCallback = function (err, res) {
             console.log("lookupEntry for " + entryDate + " found ");
-            console.dir(res);
+//            console.dir(res);
             expect(err).toBe(false);
             //expect(res) ?
             asyncSpecDone();
@@ -116,18 +95,20 @@ describe('timeEntry', function () {
 
    */
 
+
+    //https://yoururl.freshbooks.com/menu.php?route=Report_TimesheetDetails&type=timesheet-details&project_status=active&date_start=02%2F23%2F01&date_end=03%2F24%2F12&group_by=team&billed_filter=&submit=
     it('timeEntry should remove all entries for today', function(){
 
         var entryDate = today;
         var filter = {};
-        filter.dateFrom = "2009-01-01";
+        filter.dateFrom = "2001-01-01"; //entryDate;
         filter.dateTo = entryDate;
 
         var timeentryClass = new FreshBooks.TimeEntry;      // SMELL: seems weird to have to set up an instance to do a class based request.
 
         var listingCallback = function (err, res) {
             console.log("lookupEntry for " + entryDate + " found ");
-            //console.dir(res);
+            console.log(res.page, res.pages, res.total);
             //expect(err).toBe(false); // TODO - why is returning false when it should be true?
 
 
@@ -141,7 +122,7 @@ describe('timeEntry', function () {
                 obj.timeEntryId = entryId;
 
                 function deleteIt (objParameter, i, entryId) {
-                    console.log("Deleting ["+i+"] " + entryId);
+                   // console.log("Deleting ["+i+"] " + entryId);
 
                     var deletedCallback = function (status, res) {
                         console.log("deleted ["+ i + "] (" + entryId + ") "+status);
