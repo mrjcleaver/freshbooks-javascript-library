@@ -1,4 +1,5 @@
-FreshBooks_Client.prototype = new FreshBooks_Element;
+var FreshBooks_Element = require('./Element');
+FreshBooks_Client.prototype = new FreshBooks_Element();
 FreshBooks_Client.prototype.constructor = FreshBooks_Client;
 FreshBooks_Client.superclass = FreshBooks_Element.prototype;
 /**
@@ -42,7 +43,9 @@ function FreshBooks_Client()
 	this.linkClientView = "";
 	this.linkView = "";
 }
-	
+
+module.exports = FreshBooks_Client;
+
 /**
  * return XML string
  */ 	

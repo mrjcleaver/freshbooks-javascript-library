@@ -4,7 +4,7 @@ var nodeRequest = require("request");
 
 var jsdom = require('jsdom');
 var log4js = require('log4js');
-var logger = log4js.getLogger();
+var logger = log4js.getLogger('httpClient');
 logger.setLevel(logger.WARN);
 
 
@@ -75,7 +75,7 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
             console.trace();
             throw ("No content!");
         } else {
-            logger.info("Sending " + content);
+            logger.trace("Sending " + content);
         }
 
         var responseCallback = processNodeResponse;
@@ -151,7 +151,7 @@ function FreshBooks_HttpClient(url, token, proxyUrl) {
         } else {
             root._ = _;
         }
-        logger.info("isNode?: ", isNode);
+        logger.trace("isNode?: ", isNode);
         return isNode;
     };
 
