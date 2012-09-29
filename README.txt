@@ -1,5 +1,9 @@
 ======================================================================
 
+*NB* - I have stopped working on this, but https://github.com/Metacrash/freshbooks.js has recently emerged 
+and so you might want to try that also
+
+
 DESCRIPTION:
 
 This is a Javascript library for FreshBooks API (http://developers.freshbooks.com/overview/).
